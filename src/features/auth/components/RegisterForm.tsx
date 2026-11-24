@@ -1,11 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { RegisterUser } from "../../../api/auth.api";
+import { useNavigate } from "react-router-dom";
 
-interface RegisterFormProps {
-  onShowLogin: () => void;
-}
-
-const RegisterForm = ({ onShowLogin }: RegisterFormProps) => {
+const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,6 +11,7 @@ const RegisterForm = ({ onShowLogin }: RegisterFormProps) => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,6 +23,7 @@ const RegisterForm = ({ onShowLogin }: RegisterFormProps) => {
       const response = await RegisterUser(formData);
       setMessage(response.message);
       setFormData({ name: "", email: "", password: "" });
+      navigate("/login");
     } catch (submitError: unknown) {
       setError(
         submitError instanceof Error
@@ -100,7 +99,7 @@ const RegisterForm = ({ onShowLogin }: RegisterFormProps) => {
 
       <p className="auth-switch">
         Already have an account?{" "}
-        <button className="auth-link" onClick={onShowLogin} type="button">
+        <button className="auth-link" onClick={() => navigate("/login")} type="button">
           Sign in
         </button>
       </p>
