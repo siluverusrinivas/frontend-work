@@ -1,15 +1,21 @@
 
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import LoginForm from "./features/auth/components/LoginForm";
+import RegisterForm from "./features/auth/components/Register";
 
 function App() {
-  return (
-    <>
-    
-<h1>login page is implemented soon</h1>
-     
+  const [showRegister, setShowRegister] = useState(false);
 
-    </>
-  )
+  return (
+    <main className="auth-page">
+      {showRegister ? (
+        <RegisterForm onShowLogin={() => setShowRegister(false)} />
+      ) : (
+        <LoginForm onShowRegister={() => setShowRegister(true)} />
+      )}
+    </main>
+  );
 }
 
-export default App
+export default App;
