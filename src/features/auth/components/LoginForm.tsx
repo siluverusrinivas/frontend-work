@@ -1,15 +1,13 @@
 import { useState, type FormEvent } from "react";
 import { LoginUser } from "../../../api/auth.api";
+import { useNavigate } from "react-router-dom";
 
-interface LoginFormProps {
-  onShowRegister: () => void;
-}
-
-const LoginForm = ({ onShowRegister }: LoginFormProps) => {
+const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,6 +19,7 @@ const LoginForm = ({ onShowRegister }: LoginFormProps) => {
       const response = await LoginUser(formData);
       setMessage(response.message);
       setFormData({ email: "", password: "" });
+      navigate("/dashboard");
     } catch (submitError: unknown) {
       setError(
         submitError instanceof Error
@@ -83,7 +82,7 @@ const LoginForm = ({ onShowRegister }: LoginFormProps) => {
 
       <p className="auth-switch">
         Don&apos;t have an account?{" "}
-        <button className="auth-link" onClick={onShowRegister} type="button">
+        <button className="auth-link" onClick={() => navigate("/")} type="button">
           Create one
         </button>
       </p>
